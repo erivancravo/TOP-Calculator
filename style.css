@@ -1,4 +1,8 @@
- body {
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
   margin: 0;
   display: flex;
   justify-content: center;
@@ -37,7 +41,28 @@
  }
 
  #inputDisplay {
+  font-size: x-large;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   min-height: 80px;
   border: 2px solid black;
   border-radius: 5px;
+  
  }
+
+ .special-button {
+  font-size: x-large;
+  height: 40px;
+  width: 2fr; /* Tamanho maior do que os outros botões */
+  position: relative; /* Permite posicionamento absoluto */
+  z-index: 1; /* Coloca os botões especiais acima dos outros */
+}
+
+#clear {
+  background-color: rgb(207, 198, 70);
+}
+
+#delete {
+  background-color: rgb(197, 33, 33);
+}

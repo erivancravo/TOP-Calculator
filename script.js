@@ -4,38 +4,60 @@ function select(value) {
   equation.innerText = equation.innerText + value;
 }
 
+function contarFrequencia(array, element) {
+  let contador = 0;
+  // Percorra o array
+  for (let i = 0; i < array.length; i++) {
+    // Verifique se o elemento atual é igual ao elemento desejado
+    if (array[i] === element) {
+      contador++;
+    }
+  }
+  return contador;
+}
+
 function divide(n1, n2) {
-  parseFloat(n1);
-  parseFloat(n2);
+  n1 = parseFloat(n1);
+  n2 = parseFloat(n2);
   return n1 / n2;
 }
 
-function multiply() {
-  parseFloat(n1);
-  parseFloat(n2);
+function multiply(n1, n2) {
+  n1 = parseFloat(n1);
+  n2 = parseFloat(n2);
   return n1 * n2;
 }
 
 function add(n1, n2) {
-  parseFloat(n1);
-  parseFloat(n2);
+  n1 = parseFloat(n1);
+  n2 = parseFloat(n2);
   return n1 + n2;
 }
 
-function subtract() {
-  parseFloat(n1);
-  parseFloat(n2);
+function subtract(n1, n2) {
+  n1 = parseFloat(n1);
+  n2 = parseFloat(n2);
   return n1 - n2;
 }
 
-function idkYet(equation, operator) {
-  let equation2 = equation.slice();
-  const operatorIndex = equation2.indexOf(operator);
+function clearing() {
+  const display = document.querySelector('div#inputDisplay');
+  display.innerText = '';
+}
+
+function deleting() {
+  const display = document.querySelector('div#inputDisplay');
+  display.innerText = display.innerText.slice(0, -1);
+
+}
+
+function idkYet(equation, operator, counter) {
+  let operatorIndex = equation.indexOf(operator);
   let operand1 = '';
   let i;
   for(i = operatorIndex - 1; i >= 0; i--) {
-    if(isNaN(equation2[i]) === false) {
-      operand1 = equation2[i] + operand1;
+    if(isNaN(equation[i]) === false || equation[i] === '.') {
+      operand1 = equation[i] + operand1;
     } else {
       break;
     }
@@ -44,31 +66,35 @@ function idkYet(equation, operator) {
   // 2 4 + 1 2 0 / 1 2 + 1  6 
   let operand2 = '';
   let j;
-  for(j = operatorIndex + 1; j < equation2.length; j++) {
-    if(isNaN(equation2[j]) === false) {
-      operand2 += equation2[j];
+  for(j = operatorIndex + 1; j < equation.length; j++) {
+    if(isNaN(equation[j]) === false || equation[j] === '.') {
+      operand2 += equation[j];
     } else {
       break;
     }
   }
 
   i += 1;
-  equation2.splice(i, (j - i));
-  const newPosition = i;
+  equation.splice(i, (j - i));
+  let newPosition = i;
   if(operator === '*') {
-    const result = multiply(operand1, operand2);
-    equation2.splice(newPosition, 0, result);
+    let result = multiply(operand1, operand2);
+    counter--;
+    equation.splice(newPosition, 0, result);
   } else if(operator === '/') {
-    const result = divide(operand1, operand2);
-    equation2.splice(newPosition, 0, result);
+    let result = divide(operand1, operand2);
+    counter--;
+    equation.splice(newPosition, 0, result);
   } else if(operator === '+') {
-    const result = add(operand1, operand2);
-    equation2.splice(newPosition, 0, result);
+    let result = add(operand1, operand2);
+    counter--;
+    equation.splice(newPosition, 0, result);
   } else {
-    const result = subtract(operand1, operand2);
-    equation2.splice(newPosition, 0, result);
+    let result = subtract(operand1, operand2);
+    counter--;
+    equation.splice(newPosition, 0, result);
   }
-  return equation2;
+  return equation;
 }
 
 function calculate() {
@@ -76,26 +102,49 @@ function calculate() {
   const display = document.querySelector('div#inputDisplay');
   const equation = display.innerText;
   let changingEq = equation.split('');
-  console.log(changingEq);
-  console.log(changingEq.indexOf('/'));
-  while() {
+  let countDivide = contarFrequencia(changingEq, '/');
+  let countMultiply = contarFrequencia(changingEq, '*');
+
+  for(let i = 0; i < countDivide + countMultiply; i++) {
     let idxDivide = changingEq.indexOf('/');
     let idxMult = changingEq.indexOf('*');
-    console.log(idxMult);
     if(idxMult !== -1 && idxDivide !== -1) {
       if(idxMult < idxDivide) {
-        changingEq = idkYet(changingEq, '*');
-        console.log(changingEq + ' to doidão');
+        changingEq = idkYet(changingEq, '*', countMultiply);
+        //console.log(changingEq + ' to doidão');
       } else if(idxDivide < idxMult) {
-        changingEq = idkYet(changingEq, '/');
-        console.log(changingEq + ' heyhey');
+        changingEq = idkYet(changingEq, '/', countDivide);
+        //console.log(changingEq + ' heyhey');
       }
     } else if(idxMult !== -1 && idxDivide === -1) {
-      changingEq = idkYet(changingEq, '*');
-      console.log(changingEq + ' to doidão bagarai');
+      changingEq = idkYet(changingEq, '*', countMultiply);
+      //console.log(changingEq + ' to doidão bagarai');
     } else if(idxMult === -1 && idxDivide !== -1) {
-      changingEq = idkYet(changingEq, '/');
+      changingEq = idkYet(changingEq, '/', countDivide);
       console.log(changingEq + ' heyhey cheguei');
     }
   }
+
+  let countAdd = contarFrequencia(changingEq, '+');
+  let countSub = contarFrequencia(changingEq, '-');
+  for(let j = 0; j < countAdd + countSub; j++) {
+    let idxAdd = changingEq.indexOf('+');
+    let idxSub = changingEq.indexOf('-');
+    if(idxAdd !== -1 && idxSub !== -1) {
+      if(idxAdd < idxSub) {
+        changingEq = idkYet(changingEq, '+', countAdd);
+      } else {
+        changingEq = idkYet(changingEq, '-', countSub);
+      } 
+    } else if(idxAdd !== -1 && idxSub === -1) {
+      changingEq = idkYet(changingEq, '+', countAdd);
+    } else if(idxAdd === -1 && idxSub !== -1) {
+      changingEq = idkYet(changingEq, '-', countSub);
+    } 
+  }
+
+  alert('O resultado é: ' + changingEq);
+  clearing();
 }
+
+alert('Infeliz não digite expressão errada como "1++1" ou "3/+5**8"');
