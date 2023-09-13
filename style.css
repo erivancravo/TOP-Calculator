@@ -1,0 +1,43 @@
+ body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(55, 190, 235);
+ }
+
+ #calculator {
+  padding: 10px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid black;
+  border-radius: 10px;
+ }
+
+ #keys {
+  padding: 10px;
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+  height: 500px;
+  width: 400px;
+ } 
+
+ .keyL {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(55, 190, 235);
+  border: 2px solid black;
+  border-radius: 5px;
+  text-align: center;
+  font-size: xx-large;
+  cursor: pointer;
+ }
+
+ #inputDisplay {
+  min-height: 80px;
+  border: 2px solid black;
+  border-radius: 5px;
+ }
